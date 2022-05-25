@@ -13,7 +13,8 @@ import {
     DefaultTransitionDuration,
     DefaultTransitionRepeats,
     IDirectiveHandlerParams,
-    ExtractDuration
+    ExtractDuration,
+    IsObject
 } from "@benbraide/inlinejs";
 
 interface INumericHandlerParams{
@@ -110,6 +111,13 @@ export const TransitionDirectiveHandler = CreateDirectiveHandlerCallback('transi
     }
     else if (argKey === 'repeats' || argKey === 'delay'){
         HandleNumeric({ data, componentId, contextElement, expression, key: argKey, defaultValue: 0, isDuration: (argKey === 'delay') });
+    }
+    else{//Check for object
+        EvaluateLater({ componentId, contextElement, expression, disableFunctionCall: true })((value) => {
+            if (IsObject(value)){//Copy props
+                Object.entries(value).forEach(([key, value]) => (data[key] = value));
+            }
+        });
     }
 });
 

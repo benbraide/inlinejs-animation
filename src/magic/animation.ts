@@ -22,6 +22,10 @@ const NamedAnimationDurations = {
     swift: 100,
 };
 
+const NamedAnimationConstants = {
+    infinite: -1,
+};
+
 function CreateAnimationProxy(){
     let callActor = (actor: AnimationActorCallbackType | IAnimationActor, params: IAnimationActorParams) => ((typeof actor === 'function') ? actor(params) : actor.Handle(params));
     let storedConcept: IAnimationConcept | null = null, methods = {
@@ -64,6 +68,10 @@ function CreateAnimationProxy(){
 
             if (NamedAnimationDurations.hasOwnProperty(prop)){
                 return NamedAnimationDurations[prop];
+            }
+
+            if (NamedAnimationConstants.hasOwnProperty(prop)){
+                return NamedAnimationConstants[prop];
             }
 
             if (methods.hasOwnProperty(prop)){
