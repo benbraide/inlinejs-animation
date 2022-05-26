@@ -76,7 +76,7 @@ Available magic properties:
 
 > **Note:** You can specify a time as `string` or an integer value in `milliseconds`.
 
-`repeats` sets or updates how long the animation takes to complete. Example:
+`repeats` sets or updates how many times the animation should run. Example:
 
 ```html
 <div x-transition:repeats="$animation.infinite"></div>
@@ -129,6 +129,7 @@ Available magic properties:
 | Method | Description |
 | --- | --- |
 | `collect` | Returns the combination of two or more `actors` to work as a unit. Example: **`$animation.collect('zoom', $animation.spin)`**|
+| `invert` | Inverts the specified ease function or object. Example: **`$animation.invert($animation.cubic)`**|
 
 `$animation` will search for an `ease` object by name. The following is the default list of `ease` objects:
 

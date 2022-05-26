@@ -7,10 +7,13 @@ import {
     AnimationActorCallbackType,
     IAnimationActor,
     IAnimationActorParams,
-    IAnimationConcept
+    IAnimationConcept,
+    AnimationEaseCallbackType,
+    IAnimationEaseParams
 } from "@benbraide/inlinejs";
 
 import { ApplyRange, ApplyRangeAndTransform, ApplyTransform, FormatValue } from "../actors/scene/generic";
+import { CallAnimationEase } from "../easing/call";
 
 const NamedAnimationDurations = {
     crawl: 2000,
@@ -30,9 +33,14 @@ function CreateAnimationProxy(){
     let callActor = (actor: AnimationActorCallbackType | IAnimationActor, params: IAnimationActorParams) => ((typeof actor === 'function') ? actor(params) : actor.Handle(params));
     let storedConcept: IAnimationConcept | null = null, methods = {
         collect: (...actors: (string | AnimationActorCallbackType)[]): AnimationActorCallbackType => {
-            let concept = (storedConcept ||(storedConcept =  GetGlobal().GetConcept<IAnimationConcept>('animation')));
+            let concept = (storedConcept || (storedConcept =  GetGlobal().GetConcept<IAnimationConcept>('animation')));
             let validActors = actors.map(actor => ((typeof actor === 'string') ? concept?.GetActorCollection().Find(actor) : actor)).filter(actor => !!actor);
             return (params) => validActors.forEach(actor => callActor(actor!, params));
+        },
+        invert: (ease: string | AnimationEaseCallbackType) => {
+            let concept = (storedConcept || (storedConcept =  GetGlobal().GetConcept<IAnimationConcept>('animation')));
+            let validEase = ((typeof ease === 'string') ? concept?.GetEaseCollection().Find(ease) : ease);
+            return ({ fraction, ...rest }: IAnimationEaseParams) => (validEase ? (1 - CallAnimationEase(validEase, { fraction, ...rest })) : fraction);
         },
         applySceneRange: ApplyRange,
         applySceneTransform: ApplyTransform,
