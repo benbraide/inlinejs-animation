@@ -1,3 +1,5 @@
+export * from './types';
+export * from './utilities/find-data';
 export * from './easing/add';
 export * from './easing/back';
 export * from './easing/bezier';

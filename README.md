@@ -66,6 +66,12 @@ Available magic properties:
 
 > **Note:** You can specify an ease `name` as `string` or an animation ease object.
 
+`target` specifies a different target for the animation. Valid for `x-animate` directive. Example:
+
+```html
+<div x-transition:target="document.querySelector('#animation-target')"></div>
+```
+
 `duration` sets or updates how long the animation takes to complete. Example:
 
 ```html

@@ -11,6 +11,8 @@ import {
     ResolveTransition,
     WaitTransition
 } from "@benbraide/inlinejs";
+import { IAnimationTransitionExtended } from "../types";
+import { FindTransitionData } from "../utilities/find-data";
 
 export const AnimateDirectiveHandler = CreateDirectiveHandlerCallback('animate', ({ componentId, contextElement, argKey, argOptions, ...rest }) => {
     let options = {
@@ -58,7 +60,11 @@ export const AnimateDirectiveHandler = CreateDirectiveHandlerCallback('animate',
                 handleInner(reverse);
             }
             else{
-                waitTransition(reverse, undefined, () => repeat(options.alternate ? !reverse : reverse));
+                waitTransition(
+                    reverse,
+                    (FindTransitionData({ componentId, contextElement }) as IAnimationTransitionExtended | null)?.target,
+                    () => repeat(options.alternate ? !reverse : reverse)
+                );
             }
         };
 

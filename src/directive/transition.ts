@@ -17,6 +17,9 @@ import {
     IsObject
 } from "@benbraide/inlinejs";
 
+import { IAnimationTransitionExtended } from "../types";
+import { FindTransitionData } from "../utilities/find-data";
+
 interface INumericHandlerParams{
     data: IAnimationTransition | Nothing;
     key: string;
@@ -47,8 +50,8 @@ function HandleNumeric({ data, key, defaultValue, componentId, contextElement, e
 }
 
 function GetData({ componentId, component, contextElement, argOptions }: IDirectiveHandlerParams){
-    let data: IAnimationTransition | Nothing = (component || FindComponentById(componentId))?.FindElementScope(contextElement)?.GetData('transition');
-    if (!data || GetGlobal().IsNothing(data)){
+    let data = FindTransitionData({ componentId, component, contextElement });
+    if (!data){
         data = {
             actor: null,
             ease: null,
@@ -61,7 +64,7 @@ function GetData({ componentId, component, contextElement, argOptions }: IDirect
         (component || FindComponentById(componentId))?.FindElementScope(contextElement)?.SetData('transition', data);
     }
 
-    return <IAnimationTransition>data;
+    return data;
 }
 
 export const TransitionDirectiveHandler = CreateDirectiveHandlerCallback('transition', ({ componentId, component, contextElement, expression, argKey, argOptions, ...rest }) => {
@@ -93,7 +96,7 @@ export const TransitionDirectiveHandler = CreateDirectiveHandlerCallback('transi
         });
     }
     else if (argKey === 'ease' && !GetGlobal().IsNothing(data)){
-        let evaluate = EvaluateLater({ componentId, contextElement, expression }), updateEase = (value: any) => {
+        let evaluate = EvaluateLater({ componentId, contextElement, expression, disableFunctionCall: true }), updateEase = (value: any) => {
             if (typeof value === 'string'){
                 (data as IAnimationTransition).ease = (GetGlobal().GetConcept<IAnimationConcept>('animation')?.GetEaseCollection().Find(value) || null);
             }
@@ -106,6 +109,12 @@ export const TransitionDirectiveHandler = CreateDirectiveHandlerCallback('transi
             callback: () => evaluate(updateEase),
         });
     }
+    else if (argKey === 'target'){
+        let evaluate = EvaluateLater({ componentId, contextElement, expression });
+        UseEffect({ componentId, contextElement,
+            callback: () => evaluate(value => ((data as IAnimationTransitionExtended).target = ((value instanceof HTMLElement) ? value : undefined))),
+        });
+    }
     else if (argKey === 'duration'){
         HandleNumeric({ data, componentId, contextElement, expression, key: argKey, defaultValue: 300, isDuration: true });
     }
@@ -113,7 +122,7 @@ export const TransitionDirectiveHandler = CreateDirectiveHandlerCallback('transi
         HandleNumeric({ data, componentId, contextElement, expression, key: argKey, defaultValue: 0, isDuration: (argKey === 'delay') });
     }
     else{//Check for object
-        EvaluateLater({ componentId, contextElement, expression, disableFunctionCall: true })((value) => {
+        EvaluateLater({ componentId, contextElement, expression })((value) => {
             if (IsObject(value)){//Copy props
                 Object.entries(value).forEach(([key, value]) => (data[key] = value));
             }
