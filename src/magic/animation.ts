@@ -15,7 +15,7 @@ import {
 import { ApplyRange, ApplyRangeAndTransform, ApplyTransform, FormatValue } from "../actors/scene/generic";
 import { CallAnimationEase } from "../easing/call";
 
-const NamedAnimationDurations = {
+let NamedAnimationDurations = {
     crawl: 2000,
     slower: 1000,
     slow: 750,
@@ -25,36 +25,75 @@ const NamedAnimationDurations = {
     swift: 100,
 };
 
-const NamedAnimationConstants = {
+let NamedAnimationConstants = {
     infinite: -1,
 };
 
 function CreateAnimationProxy(){
+    let storedConcept: IAnimationConcept | null = null, getConcept = () => (storedConcept || (storedConcept =  GetGlobal().GetConcept<IAnimationConcept>('animation')));
     let callActor = (actor: AnimationActorCallbackType | IAnimationActor, params: IAnimationActorParams) => ((typeof actor === 'function') ? actor(params) : actor.Handle(params));
-    let storedConcept: IAnimationConcept | null = null, methods = {
+
+    const methods = {
         collect: (...actors: (string | AnimationActorCallbackType)[]): AnimationActorCallbackType => {
-            let concept = (storedConcept || (storedConcept =  GetGlobal().GetConcept<IAnimationConcept>('animation')));
-            let validActors = actors.map(actor => ((typeof actor === 'string') ? concept?.GetActorCollection().Find(actor) : actor)).filter(actor => !!actor);
+            let validActors = actors.map(actor => ((typeof actor === 'string') ? getConcept()?.GetActorCollection().Find(actor) : actor)).filter(actor => !!actor);
             return (params) => validActors.forEach(actor => callActor(actor!, params));
         },
         invert: (ease: string | AnimationEaseCallbackType) => {
-            let concept = (storedConcept || (storedConcept =  GetGlobal().GetConcept<IAnimationConcept>('animation')));
-            let validEase = ((typeof ease === 'string') ? concept?.GetEaseCollection().Find(ease) : ease);
+            let validEase = ((typeof ease === 'string') ? getConcept()?.GetEaseCollection().Find(ease) : ease);
             return ({ fraction, ...rest }: IAnimationEaseParams) => (validEase ? (1 - CallAnimationEase(validEase, { fraction, ...rest })) : fraction);
         },
         applySceneRange: ApplyRange,
         applySceneTransform: ApplyTransform,
         applySceneRangeAndTransform: ApplyRangeAndTransform,
         formatSceneValue: FormatValue,
+        setNameDuration: (name: string, value: number) => {
+            NamedAnimationDurations[name] = value;
+        },
+        removeNameDuration: (name: string) => {
+            delete NamedAnimationDurations[name];
+        },
+        setNameConstant: (name: string, value: number) => {
+            NamedAnimationConstants[name] = value;
+        },
+        removeNameConstant: (name: string) => {
+            delete NamedAnimationConstants[name];
+        },
+        getConcept,
+    };
+
+    const groups = {
+        creators: CreateInplaceProxy(BuildGetterProxyOptions({
+            getter: (prop) => (prop && getConcept()?.GetCreatorCollection().Find(prop)),
+        })),
+        actors: CreateInplaceProxy(BuildGetterProxyOptions({
+            getter: (prop) => (prop && getConcept()?.GetActorCollection().Find(prop)),
+        })),
+        eases: CreateInplaceProxy(BuildGetterProxyOptions({
+            getter: (prop) => (prop && getConcept()?.GetEaseCollection().Find(prop)),
+        })),
+        durations: CreateInplaceProxy(BuildGetterProxyOptions({
+            getter: (prop) => (prop && NamedAnimationDurations.hasOwnProperty(prop) && NamedAnimationDurations[prop]),
+        })),
+        constants: CreateInplaceProxy(BuildGetterProxyOptions({
+            getter: (prop) => (prop && NamedAnimationConstants.hasOwnProperty(prop) && NamedAnimationConstants[prop]),
+        })),
     };
 
     return CreateInplaceProxy(BuildGetterProxyOptions({
         getter: (prop) => {
-            if(!prop){
+            if (!prop){
                 return;
             }
 
-            let concept = (storedConcept ||(storedConcept =  GetGlobal().GetConcept<IAnimationConcept>('animation')));
+            if (groups.hasOwnProperty(prop)){
+                return groups[prop];
+            }
+
+            if (methods.hasOwnProperty(prop)){
+                return methods[prop];
+            }
+
+            let concept = getConcept();
             if (!concept){
                 return;
             }
@@ -81,12 +120,8 @@ function CreateAnimationProxy(){
             if (NamedAnimationConstants.hasOwnProperty(prop)){
                 return NamedAnimationConstants[prop];
             }
-
-            if (methods.hasOwnProperty(prop)){
-                return methods[prop];
-            }
         },
-        lookup: [...Object.keys(methods)],
+        lookup: [...Object.keys(groups), ...Object.keys(methods)],
     }));
 }
 
