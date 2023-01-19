@@ -59,3 +59,4 @@ export * from './directive/animate';
 export * from './directive/transition';
 export * from './magic/animation';
 export * from './concept';
+export * from './entry';
