@@ -58,7 +58,34 @@ import { SwingAnimationCreator } from './creators/swing';
 
 import { TransitionDirectiveHandlerCompact } from './directive/transition';
 import { AnimateDirectiveHandlerCompact } from './directive/animate';
+
 import { AnimationMagicHandlerCompact } from './magic/animation';
+
+import { AnimationSceneActElementCompact } from './components/act';
+import { AnimationElementCompact } from './components/animation';
+import { AnimationCollectElementCompact } from './components/collect';
+import { AnimateContentElementCompact } from './components/content';
+import { AnimationNullElementCompact } from './components/null';
+import { AnimationOpacityElementCompact } from './components/opacity';
+import { AnimationRotateElementCompact } from './components/rotate';
+import { AnimationScaleElementCompact } from './components/scale';
+import { AnimationSceneElementCompact } from './components/scene';
+import { AnimationSharedElementCompact } from './components/shared';
+import { AnimationSliceElementCompact } from './components/slice';
+import { AnimationTranslateElementCompact } from './components/translate';
+
+import { AnimationShakeElementCompact } from './components/shake';
+import { AnimationVibrateElementCompact } from './components/vibrate';
+import { AnimationPulseElementCompact } from './components/pulse';
+import { AnimationHeartbeatElementCompact } from './components/heartbeat';
+import { AnimationJelloElementCompact } from './components/jello';
+import { AnimationRubberbandElementCompact } from './components/rubberband';
+import { AnimationSwingElementCompact } from './components/swing';
+import { AnimationTadaElementCompact } from './components/tada';
+
+import { TransitionElementCompact } from './components/transition';
+import { EaseElementCompact } from './components/ease';
+import { EaseBezierElementCompact } from './components/bezier';
 
 export function InlineJSAnimation(){
     WaitForGlobal().then(() => {
@@ -160,5 +187,31 @@ export function InlineJSAnimation(){
         TransitionDirectiveHandlerCompact();
         AnimateDirectiveHandlerCompact();
         AnimationMagicHandlerCompact();
+
+        AnimationSceneActElementCompact();
+        AnimationElementCompact();
+        AnimationCollectElementCompact();
+        AnimateContentElementCompact();
+        AnimationNullElementCompact();
+        AnimationOpacityElementCompact();
+        AnimationRotateElementCompact();
+        AnimationScaleElementCompact();
+        AnimationSceneElementCompact();
+        AnimationSharedElementCompact();
+        AnimationSliceElementCompact();
+        AnimationTranslateElementCompact();
+
+        AnimationShakeElementCompact();
+        AnimationVibrateElementCompact();
+        AnimationPulseElementCompact();
+        AnimationHeartbeatElementCompact();
+        AnimationJelloElementCompact();
+        AnimationRubberbandElementCompact();
+        AnimationSwingElementCompact();
+        AnimationTadaElementCompact();
+        
+        TransitionElementCompact();
+        EaseElementCompact();
+        EaseBezierElementCompact();
     });
 }

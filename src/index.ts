@@ -1,6 +1,8 @@
 export * from './types'
 
 export * from './utilities/find-data'
+export * from './utilities/named-numeric'
+export * from './utilities/resolve'
 
 export * from './easing/add'
 export * from './easing/back'
@@ -49,6 +51,9 @@ export * from './actors/translate/slide-left'
 export * from './actors/translate/slide-right'
 export * from './actors/translate/slide-up'
 
+export * from './actors/composite/concurrent'
+export * from './actors/composite/shared'
+
 export * from './creators/bezier'
 export * from './creators/jello'
 export * from './creators/rotate'
@@ -69,6 +74,37 @@ export * from './directive/animate'
 export * from './directive/transition'
 
 export * from './magic/animation'
+
+export * from './components/act'
+export * from './components/actor'
+export * from './components/animation'
+export * from './components/base'
+export * from './components/collect'
+export * from './components/content'
+export * from './components/null'
+export * from './components/opacity'
+export * from './components/personal'
+export * from './components/rotate'
+export * from './components/scale'
+export * from './components/scene'
+export * from './components/scene-base'
+export * from './components/shared'
+export * from './components/slice'
+export * from './components/translate'
+
+export * from './components/shake'
+export * from './components/vibrate'
+export * from './components/pulse'
+export * from './components/heartbeat'
+export * from './components/jello'
+export * from './components/rubberband'
+export * from './components/swing'
+export * from './components/tada'
+
+export * from './components/transition'
+export * from './components/ease-actor'
+export * from './components/ease'
+export * from './components/bezier'
 
 export * from './concept'
 

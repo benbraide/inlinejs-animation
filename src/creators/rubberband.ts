@@ -1,11 +1,16 @@
+import { IScaleAnimatorActorOrigin } from "../actors/scale/generic";
 import { ApplyRange, ApplyTransform, CreateSceneAnimationCallback } from "../actors/scene/generic";
 
 export interface IRubberbandAnimationCallbackInfo{
     factor?: number;
     multiplier?: number;
+    origin?: IScaleAnimatorActorOrigin;
 }
 
-export function RubberbandAnimationCreator({ factor = 1.26, multiplier = 0.10 }: IRubberbandAnimationCallbackInfo = {}){
+export function RubberbandAnimationCreator({ factor = 1.26, multiplier = 0.10, origin }: IRubberbandAnimationCallbackInfo = {}){
+    factor = (factor || 1.26);
+    multiplier = (multiplier || 0.10);
+    
     return CreateSceneAnimationCallback({
         frames: [
             { checkpoint: 0, actor: ({ target, fraction }) => ComputeAndApply(target, fraction, factor, multiplier, null, 1, null, 1) },
@@ -17,6 +22,7 @@ export function RubberbandAnimationCreator({ factor = 1.26, multiplier = 0.10 }:
             { checkpoint: 75, actor: ({ target, fraction }) => ComputeAndApply(target, fraction, factor, multiplier, 2, -2, 3, -2) },
             { checkpoint: 100, actor: ({ target, fraction }) => ComputeAndApply(target, fraction, factor, multiplier, null, 1, null, 1) },
         ],
+        origin,
     });
 }
 

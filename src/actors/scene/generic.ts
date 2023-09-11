@@ -37,7 +37,10 @@ export interface ISceneAnimationActorInfo extends ISceneAnimationCallbackInfo{
     name: string;
 }
 
-export function CreateSceneAnimationCallback({ frames, origin: { x = 'center', y = 'center' } = {} }: ISceneAnimationCallbackInfo){
+export function CreateSceneAnimationCallback({ frames, origin: { x = 'center', y = 'center' } = {} }: ISceneAnimationCallbackInfo): AnimationActorCallbackType{
+    x = (x || 'center');
+    y = (y || 'center');
+    
     let flatFrames = frames.reduce((prev, { actor, checkpoint }) => {
         return (((Array.isArray(checkpoint) ? prev.push(...checkpoint.map(c => ({ actor, checkpoint: c }))) : prev.push({ actor, checkpoint  })) && false) || prev);
     }, new Array<ISceneAnimationFrameFlat>()).sort((first, second) => ((first.checkpoint <= second.checkpoint) ? ((first.checkpoint < second.checkpoint) ? -1 : 0) : 1));
@@ -52,7 +55,7 @@ export function CreateSceneAnimationCallback({ frames, origin: { x = 'center', y
     let currentFrame: ISceneAnimationFrameOptimized | null = null, findFrame = (checkpoint: number) => optimizedFrames.find(frame => checkpointIsInFrame(frame, checkpoint));
 
     let callActor = (actor: AnimationActorCallbackType | IAnimationActor, params: IAnimationActorParams) => ((typeof actor === 'function') ? actor(params) : actor.Handle(params));
-    return ({ fraction, target, stage }) => {
+    return ({ fraction, target, stage, ...rest }) => {
         if (stage === 'start'){
             currentFrame = null;
             translatedOrigin && (target.style.transformOrigin = translatedOrigin);
@@ -65,7 +68,7 @@ export function CreateSceneAnimationCallback({ frames, origin: { x = 'center', y
 
         if (currentFrame){
             let rangeDelta = ((currentFrame.range.to || 100) - currentFrame.range.from);
-            callActor(currentFrame.actor, { fraction: ((rangeDelta == 0) ? 0 : ((checkpoint - currentFrame.range.from) / rangeDelta)), target, stage });
+            callActor(currentFrame.actor, { fraction: ((rangeDelta == 0) ? 0 : ((checkpoint - currentFrame.range.from) / rangeDelta)), target, stage, ...rest });
         }
     };
 }

@@ -18,6 +18,7 @@ export const AnimateDirectiveHandler = CreateDirectiveHandlerCallback('animate',
     let options = {
         alternate: argOptions.includes('alternate'),
         normal: argOptions.includes('normal'),
+        reset: argOptions.includes('reset'),
         inner: (argKey === 'inner'),
     };
 
@@ -35,6 +36,12 @@ export const AnimateDirectiveHandler = CreateDirectiveHandlerCallback('animate',
                         transitionCancel = null;
                         if (waited){
                             callback && callback();
+                            if (options.reset){
+                                (options.inner ? Array.from(contextElement.children) : [contextElement]).forEach(child => {
+                                    (child as HTMLElement).style.removeProperty('transform');
+                                    (child as HTMLElement).style.removeProperty('opacity');
+                                });
+                            }
                         }
                         else{
                             traverseTargets(child => (child as HTMLElement).style.removeProperty('transform'));

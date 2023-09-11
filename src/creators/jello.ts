@@ -1,12 +1,18 @@
+import { IScaleAnimatorActorOrigin } from "../actors/scale/generic";
 import { ApplyRangeAndTransform, CreateSceneAnimationCallback } from "../actors/scene/generic";
 
 export interface IJelloAnimationCallbackInfo{
     factor?: number;
     divisor?: number;
     unit?: string;
+    origin?: IScaleAnimatorActorOrigin;
 }
 
-export function JelloAnimationCreator({ factor = 12.6, divisor = 2, unit = 'deg' }: IJelloAnimationCallbackInfo = {}){
+export function JelloAnimationCreator({ factor = 12.6, divisor = 2, unit = 'deg', origin }: IJelloAnimationCallbackInfo = {}){
+    factor = (factor || 12.6);
+    divisor = (divisor || 2);
+    unit = (unit || 'deg');
+    
     return CreateSceneAnimationCallback({
         frames: [
             { checkpoint: 0, actor: ({ target, fraction }) => ComputeAndApply(target, fraction, factor, divisor, 0, unit) },
@@ -20,6 +26,7 @@ export function JelloAnimationCreator({ factor = 12.6, divisor = 2, unit = 'deg'
             { checkpoint: 88.8, actor: ({ target, fraction }) => ComputeAndApply(target, fraction, factor, divisor,  8, unit) },
             { checkpoint: 100, actor: ({ target, fraction }) => ComputeAndApply(target, fraction, factor, divisor,  0, unit) },
         ],
+        origin,
     });
 }
 

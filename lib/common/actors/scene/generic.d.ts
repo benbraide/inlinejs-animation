@@ -27,11 +27,7 @@ export interface ISceneAnimationCallbackInfo {
 export interface ISceneAnimationActorInfo extends ISceneAnimationCallbackInfo {
     name: string;
 }
-export declare function CreateSceneAnimationCallback({ frames, origin: { x, y } }: ISceneAnimationCallbackInfo): ({ fraction, target, stage }: {
-    fraction: any;
-    target: any;
-    stage: any;
-}) => void;
+export declare function CreateSceneAnimationCallback({ frames, origin: { x, y } }: ISceneAnimationCallbackInfo): AnimationActorCallbackType;
 export declare function CreateSceneAnimationActor({ name, ...rest }: ISceneAnimationActorInfo): import("@benbraide/inlinejs").IAnimationActorCallbackDetails;
 export declare function ApplyRange(fraction: number, from: number, to: number): number;
 export declare function ApplyTransform(target: HTMLElement, name: string, value: string): void;

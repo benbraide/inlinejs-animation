@@ -1,0 +1,56 @@
+import { Property } from "@benbraide/inlinejs-element";
+import { AnimationElement } from "./base";
+import { AnimationActorCallbackType, AnimationEaseCallbackType, IAnimationActor, IAnimationActorParams, IAnimationEase, IAnimationEaseParams, IElementScopeCreatedCallbackParams } from "@benbraide/inlinejs";
+import { ResolveActor } from "../utilities/resolve";
+
+export class AnimationActorElement extends AnimationElement{
+    @Property({ type: 'string', checkStoredObject: true })
+    public actor: string | IAnimationActor | AnimationActorCallbackType = '';
+
+    public constructor(){
+        super();
+    }
+
+    public Handle(params: IAnimationActorParams){
+        this.Handle_(params, null);
+    }
+
+    protected HandleElementScopeCreated_({ scope, ...rest }: IElementScopeCreatedCallbackParams, postAttributesCallback?: (() => void) | undefined){
+        super.HandleElementScopeCreated_({ scope, ...rest }, postAttributesCallback);
+        scope.AddUninitCallback(() => (this.actor = ''));
+    }
+
+    protected Handle_(params: IAnimationActorParams, ease: IAnimationEase | AnimationEaseCallbackType | null, timeRelative?: boolean){
+        const actor = this.ResolveActor_();
+        if (!actor){
+            return;
+        }
+        
+        if (ease){
+            const easeParams: IAnimationEaseParams = {
+                duration: params.duration,
+                elapsed: params.elapsed,
+                fraction: (timeRelative ? params.elapsedFraction : params.fraction),
+            };
+            
+            const computedFraction = ((typeof ease === 'function') ? ease(easeParams) : ease.Handle(easeParams));
+            let updatedParams: IAnimationActorParams = { ...params };
+
+            if (timeRelative){
+                updatedParams.elapsedFraction = computedFraction;
+            }
+            else{
+                updatedParams.fraction = computedFraction;
+            }
+
+            ((typeof actor === 'function') ? actor(updatedParams) : actor.Handle(updatedParams));
+        }
+        else{
+            ((typeof actor === 'function') ? actor(params) : actor.Handle(params));
+        }
+    }
+    
+    protected ResolveActor_(){
+        return ResolveActor(this, this.actor);
+    }
+}

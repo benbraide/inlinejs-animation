@@ -14,7 +14,9 @@ import {
     DefaultTransitionRepeats,
     IDirectiveHandlerParams,
     ExtractDuration,
-    IsObject
+    IsObject,
+    CreateInplaceProxy,
+    BuildProxyOptions
 } from "@benbraide/inlinejs";
 
 import { IAnimationTransitionExtended } from "../types";
@@ -125,6 +127,30 @@ export const TransitionDirectiveHandler = CreateDirectiveHandlerCallback('transi
         EvaluateLater({ componentId, contextElement, expression })((value) => {
             if (IsObject(value)){//Copy props
                 Object.entries(value).forEach(([key, value]) => (data[key] = value));
+            }
+            else if (value instanceof HTMLElement){
+                let getData: () => any;
+                if ('GetData' in value && typeof value['GetData'] === 'function'){
+                    getData = () => (value['GetData'] as any)();
+                }
+                else{
+                    getData = () => FindTransitionData({ componentId, contextElement: value });
+                }
+                
+                FindComponentById(componentId)?.FindElementScope(contextElement)?.SetData('transition', CreateInplaceProxy(BuildProxyOptions({
+                    setter: () => true,
+                    getter: (prop) => {
+                        if (!prop){
+                            return undefined;
+                        }
+                        
+                        let data = getData();
+                        if (data.hasOwnProperty(prop)){
+                            return data[prop];
+                        }
+                    },
+                    lookup: ['actor', 'ease', 'duration', 'repeats', 'delay', 'allowed'],
+                })));
             }
         });
     }

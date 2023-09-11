@@ -1,25 +1,33 @@
-import { ApplyRange, ApplyRangeAndTransform, ApplyTransform, CreateSceneAnimationCallback } from "../actors/scene/generic";
+import { IScaleAnimatorActorOrigin } from "../actors/scale/generic";
+import { ApplyRange, ApplyTransform, CreateSceneAnimationCallback } from "../actors/scene/generic";
 
 export interface ITadaAnimationCallbackInfo{
-    displacement?: number;
+    factor?: number;
     fromFactor?: number;
     toFactor?: number;
     unit?: string;
+    origin?: IScaleAnimatorActorOrigin;
 }
 
-export function TadaAnimationCreator({ displacement = 3, fromFactor = 0.9, toFactor = 1.17, unit = 'deg' }: ITadaAnimationCallbackInfo = {}){
+export function TadaAnimationCreator({ factor = 3, fromFactor = 0.9, toFactor = 1.17, unit = 'deg', origin }: ITadaAnimationCallbackInfo = {}){
+    factor = (factor || 3);
+    fromFactor = (fromFactor || 0.9);
+    toFactor = (toFactor || 1.17);
+    unit = (unit || 'deg');
+    
     return CreateSceneAnimationCallback({
         frames: [
             { checkpoint: 0, actor: ({ target, fraction }) => ComputeAndApply(target, fraction, 0, 0, null, 1, unit) },
-            { checkpoint: 1, actor: ({ target, fraction }) => ComputeAndApply(target, fraction, 0, displacement, 1, fromFactor, unit, true) },
+            { checkpoint: 1, actor: ({ target, fraction }) => ComputeAndApply(target, fraction, 0, factor, 1, fromFactor, unit, true) },
             { checkpoint: 10, actor: () => {} },
-            { checkpoint: 20, actor: ({ target, fraction }) => ComputeAndApply(target, fraction, -displacement, displacement, fromFactor, toFactor, unit) },
+            { checkpoint: 20, actor: ({ target, fraction }) => ComputeAndApply(target, fraction, -factor, factor, fromFactor, toFactor, unit) },
             { checkpoint: 30, actor: () => {} },
-            { checkpoint: [40, 60, 80], actor: ({ target, fraction }) => ComputeAndApply(target, fraction, -displacement, displacement, null, toFactor, unit) },
-            { checkpoint: [50, 70], actor: ({ target, fraction }) => ComputeAndApply(target, fraction, displacement, -displacement, null, toFactor, unit) },
-            { checkpoint: 90, actor: ({ target, fraction }) => ComputeAndApply(target, fraction, displacement, 0, toFactor, 1, unit) },
+            { checkpoint: [40, 60, 80], actor: ({ target, fraction }) => ComputeAndApply(target, fraction, -factor, factor, null, toFactor, unit) },
+            { checkpoint: [50, 70], actor: ({ target, fraction }) => ComputeAndApply(target, fraction, factor, -factor, null, toFactor, unit) },
+            { checkpoint: 90, actor: ({ target, fraction }) => ComputeAndApply(target, fraction, factor, 0, toFactor, 1, unit) },
             { checkpoint: 100, actor: ({ target, fraction }) => ComputeAndApply(target, fraction, 0, 0, null, 1, unit) },
         ],
+        origin,
     });
 }
 

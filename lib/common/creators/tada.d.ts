@@ -1,11 +1,9 @@
+import { IScaleAnimatorActorOrigin } from "../actors/scale/generic";
 export interface ITadaAnimationCallbackInfo {
-    displacement?: number;
+    factor?: number;
     fromFactor?: number;
     toFactor?: number;
     unit?: string;
+    origin?: IScaleAnimatorActorOrigin;
 }
-export declare function TadaAnimationCreator({ displacement, fromFactor, toFactor, unit }?: ITadaAnimationCallbackInfo): ({ fraction, target, stage }: {
-    fraction: any;
-    target: any;
-    stage: any;
-}) => void;
+export declare function TadaAnimationCreator({ factor, fromFactor, toFactor, unit, origin }?: ITadaAnimationCallbackInfo): import("@benbraide/inlinejs").AnimationActorCallbackType;

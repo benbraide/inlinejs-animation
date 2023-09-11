@@ -1,15 +1,7 @@
-export declare type SwingAnimatorCreatorOriginType = 'start' | 'center' | 'end';
-export interface ISwingAnimatorActorOrigin {
-    x?: SwingAnimatorCreatorOriginType;
-    y?: SwingAnimatorCreatorOriginType;
-}
+import { IScaleAnimatorActorOrigin } from "../actors/scale/generic";
 export interface ISwingAnimationCallbackInfo {
-    displacement?: number;
-    origin?: ISwingAnimatorActorOrigin;
+    factor?: number;
     unit?: string;
+    origin?: IScaleAnimatorActorOrigin;
 }
-export declare function SwingAnimationCreator({ displacement, unit, origin: { x, y } }?: ISwingAnimationCallbackInfo): ({ fraction, target, stage }: {
-    fraction: any;
-    target: any;
-    stage: any;
-}) => void;
+export declare function SwingAnimationCreator({ factor, unit, origin: { x, y } }?: ISwingAnimationCallbackInfo): import("@benbraide/inlinejs").AnimationActorCallbackType;
