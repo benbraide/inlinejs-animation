@@ -2,6 +2,6 @@ import { AnimationEaseCallbackType, IAnimationEase, IAnimationEaseCollection } f
 export declare class AnimationEaseCollection implements IAnimationEaseCollection {
     private handlers_;
     Add(handler: IAnimationEase | AnimationEaseCallbackType, name?: string): void;
-    Remove(name: string): void;
+    Remove(target: string | IAnimationEase | AnimationEaseCallbackType): void;
     Find(name: string): AnimationEaseCallbackType | null;
 }

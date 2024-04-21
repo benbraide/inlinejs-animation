@@ -14,5 +14,6 @@ export declare class SharedCompositeAnimationActor implements IAnimationActor {
     Handle({ fraction, elapsedFraction, ...rest }: IAnimationActorParams): void;
     AddActor(actor: ISharedActorSlice): void;
     RemoveActor(actor: IAnimationActor | AnimationActorCallbackType): void;
+    RemoveAll(): void;
     private FindNextActor_;
 }

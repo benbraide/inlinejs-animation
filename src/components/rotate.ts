@@ -1,9 +1,8 @@
-import { IAnimationActor } from "@benbraide/inlinejs";
 import { CreateRotateAnimationCallback, RotateAnimationActorAxisType, RotateAnimatorActorOriginType } from "../actors/rotate/generic";
 import { AnimationPersonalActorElement } from "./personal";
 import { Property, RegisterCustomElement } from "@benbraide/inlinejs-element";
 
-export class AnimationRotate extends AnimationPersonalActorElement implements IAnimationActor{
+export class AnimationRotateElement extends AnimationPersonalActorElement{
     @Property({ type: 'string' })
     public axis: RotateAnimationActorAxisType = 'z';
 
@@ -29,10 +28,6 @@ export class AnimationRotate extends AnimationPersonalActorElement implements IA
         super();
     }
 
-    public GetName(){
-        return '{AnimationRotateElement}';
-    }
-
     protected CreateActor_(){
         return CreateRotateAnimationCallback({
             axis: this.axis,
@@ -46,5 +41,5 @@ export class AnimationRotate extends AnimationPersonalActorElement implements IA
 }
 
 export function AnimationRotateElementCompact(){
-    RegisterCustomElement(AnimationRotate);
+    RegisterCustomElement(AnimationRotateElement, 'animation-rotate');
 }

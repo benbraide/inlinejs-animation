@@ -1,6 +1,6 @@
 import { CustomElement } from "@benbraide/inlinejs-element";
 
-export class AnimationElement extends CustomElement{
+export class AnimationBaseElement extends CustomElement{
     public constructor(){
         super({ isTemplate: true });
     }

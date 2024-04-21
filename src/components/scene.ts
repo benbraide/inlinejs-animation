@@ -1,4 +1,3 @@
-import { IAnimationActor } from "@benbraide/inlinejs";
 import { Property, RegisterCustomElement } from "@benbraide/inlinejs-element";
 import { CreateSceneAnimationCallback, ISceneAnimationFrame, SceneAnimatorActorOriginType } from "../actors/scene/generic";
 import { AnimationPersonalActorElement } from "./personal";
@@ -8,7 +7,7 @@ interface IAnimationSceneAct{
     act: ISceneAnimationFrame;
 }
 
-export class AnimationScene extends AnimationPersonalActorElement implements IAnimationActor{
+export class AnimationSceneElement extends AnimationPersonalActorElement{
     private acts_ = new Array<IAnimationSceneAct>();
     private idOffset_ = -1;
 
@@ -23,18 +22,19 @@ export class AnimationScene extends AnimationPersonalActorElement implements IAn
         this.DisableTemplate_();
     }
 
-    public GetName(){
-        return '{AnimationSceneElement}';
-    }
-
     public AddSceneAct(act: ISceneAnimationFrame){
         const id = `scene-act-${++this.idOffset_}`;
         this.acts_.push({ id, act });
         return id;
     }
 
-    public RemoveSceneAct(id: string){
-        this.acts_ = this.acts_.filter(info => (info.id !== id));
+    public RemoveSceneAct(target: string | ISceneAnimationFrame){
+        if (typeof target !== 'string'){
+            this.acts_ = this.acts_.filter(info => (info.act === target));
+        }
+        else{// Remove by id
+            this.acts_ = this.acts_.filter(info => (info.id !== target));
+        }
     }
 
     protected CreateActor_(){
@@ -46,5 +46,5 @@ export class AnimationScene extends AnimationPersonalActorElement implements IAn
 }
 
 export function AnimationSceneElementCompact(){
-    RegisterCustomElement(AnimationScene);
+    RegisterCustomElement(AnimationSceneElement, 'animation-scene');
 }

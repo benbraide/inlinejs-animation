@@ -1,11 +1,8 @@
-import { IAnimationEase, IAnimationEaseParams } from "@benbraide/inlinejs";
+import { IAnimationEaseParams } from "@benbraide/inlinejs";
 import { AnimationEaseActorElement } from "./ease-actor";
-export declare class Ease extends AnimationEaseActorElement implements IAnimationEase {
-    protected name_: string;
-    UpdateNameProperty(value: string): void;
+export declare class EaseElement extends AnimationEaseActorElement {
     expression: string;
     constructor();
-    GetName(): string;
     Handle(params: IAnimationEaseParams): number;
 }
 export declare function EaseElementCompact(): void;

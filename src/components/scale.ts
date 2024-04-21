@@ -1,9 +1,8 @@
-import { IAnimationActor } from "@benbraide/inlinejs";
 import { Property, RegisterCustomElement } from "@benbraide/inlinejs-element";
 import { CreateScaleAnimationCallback, ScaleAnimatorActorAxisType, ScaleAnimatorActorOriginType } from "../actors/scale/generic";
 import { AnimationPersonalActorElement } from "./personal";
 
-export class AnimationScale extends AnimationPersonalActorElement implements IAnimationActor{
+export class AnimationScaleElement extends AnimationPersonalActorElement{
     @Property({ type: 'string' })
     public axis: ScaleAnimatorActorAxisType = 'both';
 
@@ -29,10 +28,6 @@ export class AnimationScale extends AnimationPersonalActorElement implements IAn
         super();
     }
 
-    public GetName(){
-        return '{AnimationScaleElement}';
-    }
-
     protected CreateActor_(){
         return CreateScaleAnimationCallback({
             axis: this.axis,
@@ -46,5 +41,5 @@ export class AnimationScale extends AnimationPersonalActorElement implements IAn
 }
 
 export function AnimationScaleElementCompact(){
-    RegisterCustomElement(AnimationScale);
+    RegisterCustomElement(AnimationScaleElement, 'animation-scale');
 }

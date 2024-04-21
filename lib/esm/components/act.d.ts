@@ -1,6 +1,6 @@
 import { IElementScopeCreatedCallbackParams } from "@benbraide/inlinejs";
-import { AnimationElement } from "./base";
-export declare class AnimationSceneAct extends AnimationElement {
+import { AnimationBaseElement } from "./base";
+export declare class AnimationSceneActElement extends AnimationBaseElement {
     private id_;
     checkpoint: number[];
     transform: string;

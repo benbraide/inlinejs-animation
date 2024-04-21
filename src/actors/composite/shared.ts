@@ -52,6 +52,10 @@ export class SharedCompositeAnimationActor implements IAnimationActor{
         this.actors_ = this.actors_.filter(a => (a.actor !== actor));
     }
 
+    public RemoveAll(){
+        this.actors_ = [];
+    }
+
     private FindNextActor_(fraction: number){
         return this.actors_.find(info => ((info.slice.from || 0) <= fraction && (info.slice.to || 1) >= fraction));
     }

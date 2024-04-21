@@ -1,7 +1,6 @@
-import { IAnimationActor } from "@benbraide/inlinejs";
 import { RotateAnimationActorAxisType, RotateAnimatorActorOriginType } from "../actors/rotate/generic";
 import { AnimationPersonalActorElement } from "./personal";
-export declare class AnimationRotate extends AnimationPersonalActorElement implements IAnimationActor {
+export declare class AnimationRotateElement extends AnimationPersonalActorElement {
     axis: RotateAnimationActorAxisType;
     unit: string;
     from: string;
@@ -10,7 +9,6 @@ export declare class AnimationRotate extends AnimationPersonalActorElement imple
     x: RotateAnimatorActorOriginType;
     y: RotateAnimatorActorOriginType;
     constructor();
-    GetName(): string;
     protected CreateActor_(): ({ fraction, target, stage }: {
         fraction: any;
         target: any;

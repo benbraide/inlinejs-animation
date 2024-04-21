@@ -1,5 +1,5 @@
 import { AnimationSceneBaseElement } from "./scene-base";
-export declare class AnimationHeartbeat extends AnimationSceneBaseElement {
+export declare class AnimationHeartbeatElement extends AnimationSceneBaseElement {
     constructor();
     protected CreateActor_(): import("@benbraide/inlinejs").AnimationActorCallbackType;
 }

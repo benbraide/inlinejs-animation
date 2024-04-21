@@ -2,7 +2,7 @@ import { Property, RegisterCustomElement } from "@benbraide/inlinejs-element";
 import { AnimationSceneBaseElement } from "./scene-base";
 import { TadaAnimationCreator } from "../creators/tada";
 
-export class AnimationTada extends AnimationSceneBaseElement{
+export class AnimationTadaElement extends AnimationSceneBaseElement{
     @Property({ type: 'number'})
     public fromFactor = 0;
 
@@ -25,5 +25,5 @@ export class AnimationTada extends AnimationSceneBaseElement{
 }
 
 export function AnimationTadaElementCompact(){
-    RegisterCustomElement(AnimationTada);
+    RegisterCustomElement(AnimationTadaElement, 'animation-tada');
 }

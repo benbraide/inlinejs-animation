@@ -1,9 +1,9 @@
-import { AnimationEaseCallbackType, IAnimationEase, IAnimationEaseParams } from "@benbraide/inlinejs";
+import { AnimationEaseCallbackType, IAnimationEaseParams } from "@benbraide/inlinejs";
 import { Property, RegisterCustomElement } from "@benbraide/inlinejs-element";
-import { AnimationElement } from "./base";
 import { BezierAnimationEaseCreator } from "../creators/bezier";
+import { AnimationBaseEaseElement } from "./ease-base";
 
-export class EaseBezier extends AnimationElement implements IAnimationEase{
+export class EaseBezierElement extends AnimationBaseEaseElement{
     protected actor_: AnimationEaseCallbackType | null = null;
     
     @Property({ type: 'number', spread: 'points' })
@@ -22,16 +22,17 @@ export class EaseBezier extends AnimationElement implements IAnimationEase{
         super();
     }
 
-    public GetName(){
-        return '{EaseBezierElement}';
-    }
-
     public Handle(params: IAnimationEaseParams){
         this.actor_ = (this.actor_ || BezierAnimationEaseCreator([this.p1, this.p2, this.p3, this.p4]));
         return this.actor_(params);
     }
+
+    protected AttributeChanged_(name: string){
+        this.instancePropertyNames_.includes(name) && (this.actor_ = null);
+        super.AttributeChanged_(name);
+    }
 }
 
 export function EaseBezierElementCompact(){
-    RegisterCustomElement(EaseBezier);
+    RegisterCustomElement(EaseBezierElement, 'ease-bezier');
 }

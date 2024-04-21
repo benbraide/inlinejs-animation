@@ -1,9 +1,9 @@
 import { Property } from "@benbraide/inlinejs-element";
-import { AnimationElement } from "./base";
 import { AnimationEaseCallbackType, IAnimationEase, IAnimationEaseParams, IElementScopeCreatedCallbackParams } from "@benbraide/inlinejs";
 import { ResolveEase } from "../utilities/resolve";
+import { AnimationBaseEaseElement } from "./ease-base";
 
-export class AnimationEaseActorElement extends AnimationElement{
+export class AnimationEaseActorElement extends AnimationBaseEaseElement{
     @Property({ type: 'string', checkStoredObject: true })
     public actor: string | IAnimationEase | AnimationEaseCallbackType = '';
 

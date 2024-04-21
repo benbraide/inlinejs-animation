@@ -2,7 +2,7 @@ import { Property, RegisterCustomElement } from "@benbraide/inlinejs-element";
 import { AnimationSceneBaseElement } from "./scene-base";
 import { RubberbandAnimationCreator } from "../creators/rubberband";
 
-export class AnimationRubberband extends AnimationSceneBaseElement{
+export class AnimationRubberbandElement extends AnimationSceneBaseElement{
     @Property({ type: 'number'})
     public multiplier = 0;
     
@@ -20,5 +20,5 @@ export class AnimationRubberband extends AnimationSceneBaseElement{
 }
 
 export function AnimationRubberbandElementCompact(){
-    RegisterCustomElement(AnimationRubberband);
+    RegisterCustomElement(AnimationRubberbandElement, 'animation-rubberband');
 }

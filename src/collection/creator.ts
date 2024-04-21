@@ -7,8 +7,15 @@ export class AnimationCreatorCollection implements IAnimationCreatorCollection{
         this.list_[name] = creator;
     }
 
-    public Remove(name: string){
-        delete this.list_[name];
+    public Remove(target: string | AnimationCreatorCallbackType){
+        if (typeof target !== 'string'){
+            Object.entries(this.list_).forEach(([name, creator]) => {
+                (creator === target) && delete this.list_[name];
+            });
+        }
+        else{// Remove by name
+            delete this.list_[target];
+        }
     }
 
     public Find(name: string): AnimationCreatorCallbackType | null{

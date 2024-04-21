@@ -1,7 +1,6 @@
-import { IAnimationActor } from "@benbraide/inlinejs";
 import { ScaleAnimatorActorAxisType, ScaleAnimatorActorOriginType } from "../actors/scale/generic";
 import { AnimationPersonalActorElement } from "./personal";
-export declare class AnimationScale extends AnimationPersonalActorElement implements IAnimationActor {
+export declare class AnimationScaleElement extends AnimationPersonalActorElement {
     axis: ScaleAnimatorActorAxisType;
     from: string;
     to: string;
@@ -10,7 +9,6 @@ export declare class AnimationScale extends AnimationPersonalActorElement implem
     x: ScaleAnimatorActorOriginType;
     y: ScaleAnimatorActorOriginType;
     constructor();
-    GetName(): string;
     protected CreateActor_(): ({ fraction, target, stage }: {
         fraction: any;
         target: any;

@@ -22,4 +22,8 @@ export class ConcurrentCompositeAnimationActor implements IAnimationActor{
     public RemoveActor(actor: IAnimationActor | AnimationActorCallbackType){
         this.actors_ = this.actors_.filter(a => (a !== actor));
     }
+
+    public RemoveAll(){
+        this.actors_ = [];
+    }
 }

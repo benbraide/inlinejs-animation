@@ -1,13 +1,13 @@
-import { AnimationEaseCallbackType, IAnimationEase, IAnimationEaseParams } from "@benbraide/inlinejs";
-import { AnimationElement } from "./base";
-export declare class EaseBezier extends AnimationElement implements IAnimationEase {
+import { AnimationEaseCallbackType, IAnimationEaseParams } from "@benbraide/inlinejs";
+import { AnimationBaseEaseElement } from "./ease-base";
+export declare class EaseBezierElement extends AnimationBaseEaseElement {
     protected actor_: AnimationEaseCallbackType | null;
     p1: number;
     p2: number;
     p3: number;
     p4: number;
     constructor();
-    GetName(): string;
     Handle(params: IAnimationEaseParams): number;
+    protected AttributeChanged_(name: string): void;
 }
 export declare function EaseBezierElementCompact(): void;

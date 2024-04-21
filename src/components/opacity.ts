@@ -1,8 +1,7 @@
-import { IAnimationActor } from "@benbraide/inlinejs";
 import { Property, RegisterCustomElement } from "@benbraide/inlinejs-element";
 import { AnimationPersonalActorElement } from "./personal";
 
-export class AnimationOpacity extends AnimationPersonalActorElement implements IAnimationActor{
+export class AnimationOpacityElement extends AnimationPersonalActorElement{
     @Property({ type: 'number' })
     public from = 0;
 
@@ -11,10 +10,6 @@ export class AnimationOpacity extends AnimationPersonalActorElement implements I
     
     public constructor(){
         super();
-    }
-
-    public GetName(){
-        return '{AnimationOpacityElement}';
     }
 
     protected CreateActor_(){
@@ -27,5 +22,5 @@ export class AnimationOpacity extends AnimationPersonalActorElement implements I
 }
 
 export function AnimationOpacityElementCompact(){
-    RegisterCustomElement(AnimationOpacity);
+    RegisterCustomElement(AnimationOpacityElement, 'animation-opacity');
 }

@@ -18,6 +18,7 @@ import { QuadraticAnimationEase, QuadraticInAnimationEase, QuadraticOutAnimation
 import { QuartAnimationEase, QuartInAnimationEase, QuartOutAnimationEase, QuartInOutAnimationEase } from './easing/quart';
 import { QuintAnimationEase, QuintInAnimationEase, QuintOutAnimationEase, QuintInOutAnimationEase } from './easing/quint';
 import { SineAnimationEase, SineInAnimationEase, SineOutAnimationEase, SineInOutAnimationEase } from './easing/sine';
+import { CompositeAnimationEase } from './easing/composite';
 
 import { DefaultAnimationEase } from './easing/default';
 import { LinearAnimationEase } from './easing/linear';
@@ -86,6 +87,7 @@ import { AnimationTadaElementCompact } from './components/tada';
 import { TransitionElementCompact } from './components/transition';
 import { EaseElementCompact } from './components/ease';
 import { EaseBezierElementCompact } from './components/bezier';
+import { CompositeEaseElementCompact } from './components/composite-ease';
 
 export function InlineJSAnimation(){
     WaitForGlobal().then(() => {
@@ -213,5 +215,6 @@ export function InlineJSAnimation(){
         TransitionElementCompact();
         EaseElementCompact();
         EaseBezierElementCompact();
+        CompositeEaseElementCompact();
     });
 }

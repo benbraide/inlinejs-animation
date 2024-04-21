@@ -2,6 +2,6 @@ import { AnimationCreatorCallbackType, IAnimationCreatorCollection } from "@benb
 export declare class AnimationCreatorCollection implements IAnimationCreatorCollection {
     private list_;
     Add(name: string, creator: AnimationCreatorCallbackType): void;
-    Remove(name: string): void;
+    Remove(target: string | AnimationCreatorCallbackType): void;
     Find(name: string): AnimationCreatorCallbackType | null;
 }

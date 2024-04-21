@@ -1,9 +1,8 @@
 import { AnimationActorCallbackType, IAnimationActor, IAnimationActorParams } from "@benbraide/inlinejs";
-import { AnimationElement } from "./base";
-export declare class AnimationShared extends AnimationElement implements IAnimationActor {
+import { AnimationBaseActorElement } from "./actor-base";
+export declare class AnimationSharedElement extends AnimationBaseActorElement {
     timeRelative: boolean;
     constructor();
-    GetName(): string;
     Handle({ fraction, elapsedFraction, ...rest }: IAnimationActorParams): void;
     protected FindNextActor_(fraction: number): {
         fraction: number;

@@ -6,4 +6,5 @@ export declare class ConcurrentCompositeAnimationActor implements IAnimationActo
     Handle(params: IAnimationActorParams): void;
     AddActor(actor: IAnimationActor | AnimationActorCallbackType): void;
     RemoveActor(actor: IAnimationActor | AnimationActorCallbackType): void;
+    RemoveAll(): void;
 }

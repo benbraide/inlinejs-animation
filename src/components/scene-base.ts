@@ -1,9 +1,8 @@
-import { IAnimationActor } from "@benbraide/inlinejs";
 import { Property } from "@benbraide/inlinejs-element";
 import { AnimationPersonalActorElement } from "./personal";
 import { SceneAnimatorActorOriginType } from "../actors/scene/generic";
 
-export class AnimationSceneBaseElement extends AnimationPersonalActorElement implements IAnimationActor{
+export class AnimationSceneBaseElement extends AnimationPersonalActorElement{
     @Property({ type: 'number' })
     public factor = 0;
 
@@ -18,9 +17,5 @@ export class AnimationSceneBaseElement extends AnimationPersonalActorElement imp
     
     public constructor(){
         super();
-    }
-
-    public GetName(){
-        return '{AnimationSceneBaseElement}';
     }
 }

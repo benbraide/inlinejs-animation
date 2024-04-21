@@ -15,18 +15,18 @@ import {
 
 import { Property, RegisterCustomElement } from "@benbraide/inlinejs-element";
 import { FindTransitionData } from "../utilities/find-data";
-import { AnimationElement } from "./base";
+import { AnimationBaseElement } from "./base";
 import { ResolveActor, ResolveEase, ResolveNumeric } from "../utilities/resolve";
 
-export class Transition extends AnimationElement{
+export class TransitionElement extends AnimationBaseElement{
     protected data_: IAnimationTransition | null = null;
-    protected extend_: Transition | HTMLElement | null = null;
+    protected extend_: TransitionElement | HTMLElement | null = null;
     
     protected resetCallback_: () => void;
     protected resetCallbacks_ = new Array<() => void>();
 
     @Property({ type: 'string', checkStoredObject: true })
-    public extend: string | Transition = '';
+    public extend: string | TransitionElement = '';
 
     @Property({ type: 'string', checkStoredObject: true })
     public actor: string | IAnimationActor | AnimationActorCallbackType = '';
@@ -63,7 +63,7 @@ export class Transition extends AnimationElement{
         if (this.instancePropertyNames_.includes(name)){
             this.data_ = null;
             this.resetCallbacks_.forEach(callback => JournalTry(callback));
-            this.extend_ && (this.extend_ instanceof Transition) && this.extend_.RemoveResetCallback_(this.resetCallback_);
+            this.extend_ && (this.extend_ instanceof TransitionElement) && this.extend_.RemoveResetCallback_(this.resetCallback_);
             this.extend_ = ((name === 'extend') ? null : this.extend_);
         }
         
@@ -94,20 +94,20 @@ export class Transition extends AnimationElement{
         if (!this.extend_){
             if (this.extend && typeof this.extend === 'string'){
                 const el = document.getElementById(this.extend);
-                el && el instanceof Transition && (this.extend_ = el);
+                el && el instanceof TransitionElement && (this.extend_ = el);
             }
             else if (this.extend && this.extend instanceof HTMLElement){
                 this.extend_ = this.extend;
             }
 
-            this.extend_ && (this.extend_ instanceof Transition) && this.extend_.AddResetCallback_(this.resetCallback_);
+            this.extend_ && (this.extend_ instanceof TransitionElement) && this.extend_.AddResetCallback_(this.resetCallback_);
         }
         
         if (!this.extend_){
             return this.GetDefaultData_();
         }
 
-        if (this.extend_ instanceof Transition){
+        if (this.extend_ instanceof TransitionElement){
             return this.extend_.GetData();
         }
 
@@ -130,5 +130,5 @@ export class Transition extends AnimationElement{
 }
 
 export function TransitionElementCompact(){
-    RegisterCustomElement(Transition);
+    RegisterCustomElement(TransitionElement, 'transition');
 }

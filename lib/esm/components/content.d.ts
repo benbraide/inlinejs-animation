@@ -1,6 +1,6 @@
 import { ITransitionParams } from "@benbraide/inlinejs";
-import { AnimationElement } from "./base";
-export declare class AnimateContent extends AnimationElement {
+import { AnimationBaseElement } from "./base";
+export declare class AnimateContentElement extends AnimationBaseElement {
     overlap: number;
     alternate: boolean;
     reset: boolean;

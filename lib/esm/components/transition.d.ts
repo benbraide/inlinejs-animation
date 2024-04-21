@@ -1,11 +1,11 @@
 import { AnimationActorCallbackType, AnimationAllowedType, AnimationEaseCallbackType, IAnimationActor, IAnimationEase, IAnimationTransition } from "@benbraide/inlinejs";
-import { AnimationElement } from "./base";
-export declare class Transition extends AnimationElement {
+import { AnimationBaseElement } from "./base";
+export declare class TransitionElement extends AnimationBaseElement {
     protected data_: IAnimationTransition | null;
-    protected extend_: Transition | HTMLElement | null;
+    protected extend_: TransitionElement | HTMLElement | null;
     protected resetCallback_: () => void;
     protected resetCallbacks_: (() => void)[];
-    extend: string | Transition;
+    extend: string | TransitionElement;
     actor: string | IAnimationActor | AnimationActorCallbackType;
     ease: string | IAnimationEase | AnimationEaseCallbackType;
     duration: string;

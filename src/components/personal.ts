@@ -1,7 +1,7 @@
 import { AnimationActorCallbackType, IAnimationActor, IAnimationActorParams, IElementScopeCreatedCallbackParams } from "@benbraide/inlinejs";
-import { AnimationElement } from "./base";
+import { AnimationBaseActorElement } from "./actor-base";
 
-export class AnimationPersonalActorElement extends AnimationElement{
+export class AnimationPersonalActorElement extends AnimationBaseActorElement{
     protected actor_: IAnimationActor | AnimationActorCallbackType | null = null;
 
     public constructor(){

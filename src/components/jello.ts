@@ -2,7 +2,7 @@ import { Property, RegisterCustomElement } from "@benbraide/inlinejs-element";
 import { AnimationSceneBaseElement } from "./scene-base";
 import { JelloAnimationCreator } from "../creators/jello";
 
-export class AnimationJello extends AnimationSceneBaseElement{
+export class AnimationJelloElement extends AnimationSceneBaseElement{
     @Property({ type: 'number'})
     public divisor = 0;
     
@@ -21,5 +21,5 @@ export class AnimationJello extends AnimationSceneBaseElement{
 }
 
 export function AnimationJelloElementCompact(){
-    RegisterCustomElement(AnimationJello);
+    RegisterCustomElement(AnimationJelloElement, 'animation-jello');
 }

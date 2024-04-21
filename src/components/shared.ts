@@ -1,18 +1,14 @@
 import { AnimationActorCallbackType, IAnimationActor, IAnimationActorParams, JournalTry } from "@benbraide/inlinejs";
 import { Property, RegisterCustomElement } from "@benbraide/inlinejs-element";
-import { AnimationElement } from "./base";
+import { AnimationBaseActorElement } from "./actor-base";
 
-export class AnimationShared extends AnimationElement implements IAnimationActor{
+export class AnimationSharedElement extends AnimationBaseActorElement{
     @Property({ type: 'boolean' })
     public timeRelative = false;
     
     public constructor(){
         super();
         this.DisableTemplate_();
-    }
-
-    public GetName(){
-        return '{SharedAnimationElement}';
     }
 
     public Handle({ fraction, elapsedFraction, ...rest }: IAnimationActorParams){
@@ -79,5 +75,5 @@ export class AnimationShared extends AnimationElement implements IAnimationActor
 }
 
 export function AnimationSharedElementCompact(){
-    RegisterCustomElement(AnimationShared);
+    RegisterCustomElement(AnimationSharedElement, 'animation-shared');
 }

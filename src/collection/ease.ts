@@ -12,8 +12,15 @@ export class AnimationEaseCollection implements IAnimationEaseCollection{
         }
     }
 
-    public Remove(name: string){
-        delete this.handlers_[name];
+    public Remove(target: string | IAnimationEase | AnimationEaseCallbackType){
+        if (typeof target !== 'string'){
+            Object.entries(this.handlers_).forEach(([name, handler]) => {
+                (handler === target) && delete this.handlers_[name];
+            });
+        }
+        else{// Remove by name
+            delete this.handlers_[target];
+        }
     }
 
     public Find(name: string): AnimationEaseCallbackType | null{

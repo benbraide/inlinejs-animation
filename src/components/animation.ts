@@ -1,16 +1,9 @@
-import { AnimationEaseCallbackType, EvaluateLater, IAnimationActor, IAnimationActorParams, IAnimationEase } from "@benbraide/inlinejs";
+import { AnimationEaseCallbackType, EvaluateLater, IAnimationActorParams, IAnimationEase } from "@benbraide/inlinejs";
 import { Property, RegisterCustomElement } from "@benbraide/inlinejs-element";
 import { AnimationActorElement } from "./actor";
-import { ResolveActorName, ResolveEase } from "../utilities/resolve";
+import { ResolveEase } from "../utilities/resolve";
 
-export class Animation extends AnimationActorElement implements IAnimationActor{
-    protected name_ = '';
-    
-    @Property({ type: 'string' })
-    public UpdateNameProperty(value: string){
-        this.name_ = ResolveActorName(this, this.name_, value);
-    }
-
+export class AnimationElement extends AnimationActorElement{
     @Property({ type: 'string' })
     public expression = '';
 
@@ -20,10 +13,6 @@ export class Animation extends AnimationActorElement implements IAnimationActor{
     public constructor(){
         super();
         this.DisableTemplate_();
-    }
-
-    public GetName(){
-        return (this.name_ || '{AnimationElement}');
     }
 
     public Handle(params: IAnimationActorParams){
@@ -52,5 +41,5 @@ export class Animation extends AnimationActorElement implements IAnimationActor{
 }
 
 export function AnimationElementCompact(){
-    RegisterCustomElement(Animation);
+    RegisterCustomElement(AnimationElement, 'animation');
 }

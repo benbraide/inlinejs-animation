@@ -1,5 +1,5 @@
 import { AnimationSceneBaseElement } from "./scene-base";
-export declare class AnimationRubberband extends AnimationSceneBaseElement {
+export declare class AnimationRubberbandElement extends AnimationSceneBaseElement {
     multiplier: number;
     constructor();
     protected CreateActor_(): import("@benbraide/inlinejs").AnimationActorCallbackType;

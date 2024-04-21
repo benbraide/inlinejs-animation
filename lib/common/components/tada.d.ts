@@ -1,5 +1,5 @@
 import { AnimationSceneBaseElement } from "./scene-base";
-export declare class AnimationTada extends AnimationSceneBaseElement {
+export declare class AnimationTadaElement extends AnimationSceneBaseElement {
     fromFactor: number;
     toFactor: number;
     constructor();

@@ -1,10 +1,8 @@
-import { IAnimationActor } from "@benbraide/inlinejs";
 import { AnimationPersonalActorElement } from "./personal";
-export declare class AnimationOpacity extends AnimationPersonalActorElement implements IAnimationActor {
+export declare class AnimationOpacityElement extends AnimationPersonalActorElement {
     from: number;
     to: number;
     constructor();
-    GetName(): string;
     protected CreateActor_(): ({ fraction, target, stage }: {
         fraction: any;
         target: any;

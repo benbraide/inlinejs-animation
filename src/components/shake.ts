@@ -2,7 +2,7 @@ import { RegisterCustomElement } from "@benbraide/inlinejs-element";
 import { CreateShakeSceneAnimationActor } from "../actors/scene/shake";
 import { AnimationSceneBaseElement } from "./scene-base";
 
-export class AnimationShake extends AnimationSceneBaseElement{
+export class AnimationShakeElement extends AnimationSceneBaseElement{
     public constructor(){
         super();
     }
@@ -13,5 +13,5 @@ export class AnimationShake extends AnimationSceneBaseElement{
 }
 
 export function AnimationShakeElementCompact(){
-    RegisterCustomElement(AnimationShake);
+    RegisterCustomElement(AnimationShakeElement, 'animation-shake');
 }

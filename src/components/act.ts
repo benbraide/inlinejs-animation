@@ -1,9 +1,9 @@
 import { IElementScopeCreatedCallbackParams } from "@benbraide/inlinejs";
 import { Property, RegisterCustomElement } from "@benbraide/inlinejs-element";
 import { ApplyRangeAndTransform } from "../actors/scene/generic";
-import { AnimationElement } from "./base";
+import { AnimationBaseElement } from "./base";
 
-export class AnimationSceneAct extends AnimationElement{
+export class AnimationSceneActElement extends AnimationBaseElement{
     private id_ = '';
     
     @Property({ type: 'array:number', checkStoredObject: true })
@@ -30,6 +30,8 @@ export class AnimationSceneAct extends AnimationElement{
             this.AddToParent_();
             postAttributesCallback && postAttributesCallback();
         });
+
+        scope.AddUninitCallback(() => (this.parentElement && ('RemoveSceneAct' in this.parentElement) && typeof this.parentElement['RemoveSceneAct'] === 'function') && (this.parentElement['RemoveSceneAct'] as any)(this));
     }
 
     private AddToParent_(){
@@ -37,9 +39,9 @@ export class AnimationSceneAct extends AnimationElement{
             return;//Invalid context
         }
 
-        (this.id_ && ('RemoveSceneAct' in this.parentElement) && typeof this.parentElement['RemoveSceneAct'] === 'function') && (this.parentElement['RemoveSceneAct'] as any)(this.id_);
-        if (('AddSceneAct' in this.parentElement) || typeof this.parentElement['AddSceneAct'] !== 'function'){
-            this.id_ = this.parentElement['AddSceneAct']({
+        (('RemoveSceneAct' in this.parentElement) && typeof this.parentElement['RemoveSceneAct'] === 'function') && (this.parentElement['RemoveSceneAct'] as any)(this);
+        if (('AddSceneAct' in this.parentElement) && typeof this.parentElement['AddSceneAct'] === 'function'){
+            this.id_ = (this.parentElement['AddSceneAct'] as any)({
                 checkpoint: (this.checkpoint || []),
                 actor: ({ target, fraction }) => ApplyRangeAndTransform(target, this.transform, fraction, this.from, this.to, this.unit),
             });
@@ -48,5 +50,5 @@ export class AnimationSceneAct extends AnimationElement{
 }
 
 export function AnimationSceneActElementCompact(){
-    RegisterCustomElement(AnimationSceneAct);
+    RegisterCustomElement(AnimationSceneActElement, 'animation-scene-act');
 }

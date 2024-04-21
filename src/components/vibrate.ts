@@ -2,7 +2,7 @@ import { RegisterCustomElement } from "@benbraide/inlinejs-element";
 import { CreateVibrateSceneAnimationActor } from "../actors/scene/vibrate";
 import { AnimationSceneBaseElement } from "./scene-base";
 
-export class AnimationVibrate extends AnimationSceneBaseElement{
+export class AnimationVibrateElement extends AnimationSceneBaseElement{
     public constructor(){
         super();
     }
@@ -13,5 +13,5 @@ export class AnimationVibrate extends AnimationSceneBaseElement{
 }
 
 export function AnimationVibrateElementCompact(){
-    RegisterCustomElement(AnimationVibrate);
+    RegisterCustomElement(AnimationVibrateElement, 'animation-vibrate');
 }

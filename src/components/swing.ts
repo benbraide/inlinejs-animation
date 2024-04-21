@@ -2,7 +2,7 @@ import { RegisterCustomElement } from "@benbraide/inlinejs-element";
 import { AnimationSceneBaseElement } from "./scene-base";
 import { SwingAnimationCreator } from "../creators/swing";
 
-export class AnimationSwing extends AnimationSceneBaseElement{
+export class AnimationSwingElement extends AnimationSceneBaseElement{
     public constructor(){
         super();
         this.x = this.y = 'start';
@@ -18,5 +18,5 @@ export class AnimationSwing extends AnimationSceneBaseElement{
 }
 
 export function AnimationSwingElementCompact(){
-    RegisterCustomElement(AnimationSwing);
+    RegisterCustomElement(AnimationSwingElement, 'animation-swing');
 }

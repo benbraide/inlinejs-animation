@@ -2,7 +2,7 @@ import { RegisterCustomElement } from "@benbraide/inlinejs-element";
 import { CreatePulseSceneAnimationActor } from "../actors/scene/pulse";
 import { AnimationSceneBaseElement } from "./scene-base";
 
-export class AnimationPulse extends AnimationSceneBaseElement{
+export class AnimationPulseElement extends AnimationSceneBaseElement{
     public constructor(){
         super();
     }
@@ -13,5 +13,5 @@ export class AnimationPulse extends AnimationSceneBaseElement{
 }
 
 export function AnimationPulseElementCompact(){
-    RegisterCustomElement(AnimationPulse);
+    RegisterCustomElement(AnimationPulseElement, 'animation-pulse');
 }

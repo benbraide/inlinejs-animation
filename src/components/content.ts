@@ -1,8 +1,8 @@
 import { ITransitionParams, WaitTransition } from "@benbraide/inlinejs";
 import { Property, RegisterCustomElement } from "@benbraide/inlinejs-element";
-import { AnimationElement } from "./base";
+import { AnimationBaseElement } from "./base";
 
-export class AnimateContent extends AnimationElement{
+export class AnimateContentElement extends AnimationBaseElement{
     @Property({ type: 'number' })
     public overlap = 1;
 
@@ -98,5 +98,5 @@ export class AnimateContent extends AnimationElement{
 }
 
 export function AnimateContentElementCompact(){
-    RegisterCustomElement(AnimateContent);
+    RegisterCustomElement(AnimateContentElement, 'animate-content');
 }

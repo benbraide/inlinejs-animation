@@ -2,7 +2,7 @@ import { RegisterCustomElement } from "@benbraide/inlinejs-element";
 import { CreateHeartbeatSceneAnimationActor } from "../actors/scene/heartbeat";
 import { AnimationSceneBaseElement } from "./scene-base";
 
-export class AnimationHeartbeat extends AnimationSceneBaseElement{
+export class AnimationHeartbeatElement extends AnimationSceneBaseElement{
     public constructor(){
         super();
     }
@@ -13,5 +13,5 @@ export class AnimationHeartbeat extends AnimationSceneBaseElement{
 }
 
 export function AnimationHeartbeatElementCompact(){
-    RegisterCustomElement(AnimationHeartbeat);
+    RegisterCustomElement(AnimationHeartbeatElement, 'animation-heartbeat');
 }

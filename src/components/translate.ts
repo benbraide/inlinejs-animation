@@ -1,9 +1,8 @@
-import { IAnimationActor } from "@benbraide/inlinejs";
-import {  Property, RegisterCustomElement } from "@benbraide/inlinejs-element";
+import { Property, RegisterCustomElement } from "@benbraide/inlinejs-element";
 import { ComputeField, CreateTranslateAnimationCallback, TranslateAnimationActorAxisType } from "../actors/translate/generic";
 import { AnimationPersonalActorElement } from "./personal";
 
-export class AnimationTranslate extends AnimationPersonalActorElement implements IAnimationActor{
+export class AnimationTranslateElement extends AnimationPersonalActorElement{
     @Property({ type: 'string' })
     public axis: TranslateAnimationActorAxisType = 'both';
 
@@ -26,10 +25,6 @@ export class AnimationTranslate extends AnimationPersonalActorElement implements
         super();
     }
 
-    public GetName(){
-        return '{AnimationTranslateElement}';
-    }
-
     protected CreateActor_(){
         return CreateTranslateAnimationCallback({
             axis: this.axis,
@@ -43,5 +38,5 @@ export class AnimationTranslate extends AnimationPersonalActorElement implements
 }
 
 export function AnimationTranslateElementCompact(){
-    RegisterCustomElement(AnimationTranslate);
+    RegisterCustomElement(AnimationTranslateElement, 'animation-translate');
 }
