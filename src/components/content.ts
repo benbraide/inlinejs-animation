@@ -35,7 +35,7 @@ export class AnimateContentElement extends AnimationBaseElement{
         
         let alternate = this.alternate, overlap = this.overlap, reset = this.reset, sequence = this.sequence;
         let waitAbort: (() => void) | null = null, waitTarget = (target: HTMLElement, alternated: boolean) => {
-            let indexCheckpoint = index, computedOverlap = overlap, overlapIndex = (reverse ? index : (index + 1));
+            let indexCheckpoint = index, computedOverlap = overlap, overlapIndex = (index + 1);
             if (overlapIndex < content.length && content[overlapIndex].hasAttribute('overlap')){
                 computedOverlap = (parseFloat(content[overlapIndex].getAttribute('overlap') || '') || 0);
             }
@@ -66,7 +66,7 @@ export class AnimateContentElement extends AnimationBaseElement{
                         alternated && (progress += 0.5);
                     }
 
-                    (checkpoint <= progress && indexCheckpoint == index) && after(true);
+                    (checkpoint <= progress && indexCheckpoint == index) && after(alternated);
                 }),
                 contextElement: (sequence ? target : this),
                 allowRepeats: false,

@@ -17,6 +17,7 @@ import { CallAnimationEase } from "../easing/call";
 import { ConcurrentCompositeAnimationActor } from "../actors/composite/concurrent";
 import { ISharedActorSlice, SharedCompositeAnimationActor } from "../actors/composite/shared";
 import { CompositeAnimationEase } from "../easing/composite";
+import { CollectAnimationActors, CollectAnimationEasings } from "../utilities/collect";
 
 interface ISharedActorSliceInfo{
     actor: string | IAnimationActor | AnimationActorCallbackType;
@@ -27,10 +28,7 @@ function CreateAnimationProxy(){
     let storedConcept: IAnimationConcept | null = null, getConcept = () => (storedConcept || (storedConcept =  GetGlobal().GetConcept<IAnimationConcept>('animation')));
 
     const methods = {
-        collect: (...actors: (string | IAnimationActor | AnimationActorCallbackType)[]): IAnimationActor => {
-            const validActors = actors.map(actor => ((typeof actor === 'string') ? getConcept()?.GetActorCollection().Find(actor) : actor)).filter(actor => !!actor);
-            return new ConcurrentCompositeAnimationActor(<Array<IAnimationActor | AnimationActorCallbackType>>validActors);
-        },
+        collect: (...actors: (string | IAnimationActor | AnimationActorCallbackType)[]) => CollectAnimationActors(actors),
         shared: (...actors: (string | IAnimationActor | AnimationActorCallbackType | ISharedActorSliceInfo)[]): IAnimationActor => {
             const validActors = actors.map((info) => {
                 if (typeof info === 'string'){
@@ -49,10 +47,7 @@ function CreateAnimationProxy(){
             
             return new SharedCompositeAnimationActor(validActors);
         },
-        composite: (...eases: (string | IAnimationEase | AnimationEaseCallbackType)[]) => {
-            const validEases = eases.map(ease => ((typeof ease === 'string') ? getConcept()?.GetEaseCollection().Find(ease) : ease)).filter(ease => !!ease);
-            return new CompositeAnimationEase(<Array<IAnimationEase | AnimationEaseCallbackType>>validEases);
-        },
+        composite: (...eases: (string | IAnimationEase | AnimationEaseCallbackType)[]) => CollectAnimationEasings(eases),
         invert: (ease: string | AnimationEaseCallbackType) => {
             const validEase = ((typeof ease === 'string') ? getConcept()?.GetEaseCollection().Find(ease) : ease);
             return ({ fraction, ...rest }: IAnimationEaseParams) => (validEase ? (1 - CallAnimationEase(validEase, { fraction, ...rest })) : fraction);

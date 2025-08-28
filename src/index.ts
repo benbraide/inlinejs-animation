@@ -1,5 +1,7 @@
 export * from './types'
 
+export * from './utilities/collect'
+export * from './utilities/find'
 export * from './utilities/find-data'
 export * from './utilities/named-numeric'
 export * from './utilities/resolve'
@@ -22,6 +24,7 @@ export * from './easing/quadratic'
 export * from './easing/quart'
 export * from './easing/quint'
 export * from './easing/sine'
+export * from './easing/snap'
 
 export * from './actors/add'
 export * from './actors/call'

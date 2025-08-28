@@ -21,6 +21,8 @@ import {
 
 import { IAnimationTransitionExtended } from "../types";
 import { FindTransitionData } from "../utilities/find-data";
+import { CollectAnimationActors, CollectAnimationEasings } from "../utilities/collect";
+import { FindFirst } from "../utilities/find";
 
 interface INumericHandlerParams{
     data: IAnimationTransition | Nothing;
@@ -82,14 +84,17 @@ export const TransitionDirectiveHandler = CreateDirectiveHandlerCallback('transi
         return;
     }
     
-    let data = GetData({ componentId, component, contextElement, expression, argKey, argOptions, ...rest });
+    const data = GetData({ componentId, component, contextElement, expression, argKey, argOptions, ...rest });
     if (argKey === 'actor' && !GetGlobal().IsNothing(data)){
         let evaluate = EvaluateLater({ componentId, contextElement, expression, disableFunctionCall: true }), updateActor = (value: any) => {
             if (typeof value === 'string'){
-                (data as IAnimationTransition).actor = (GetGlobal().GetConcept<IAnimationConcept>('animation')?.GetActorCollection().Find(value) || null);
+                (data as IAnimationTransition).actor = GetGlobal().GetConcept<IAnimationConcept>('animation')?.GetActorCollection().Find(value) || null;
+            }
+            else if (Array.isArray(value)){
+                (data as IAnimationTransition).actor = CollectAnimationActors(value);
             }
             else{
-                (data as IAnimationTransition).actor = (value || null);
+                (data as IAnimationTransition).actor = value || null;
             }
         };
 
@@ -101,6 +106,9 @@ export const TransitionDirectiveHandler = CreateDirectiveHandlerCallback('transi
         let evaluate = EvaluateLater({ componentId, contextElement, expression, disableFunctionCall: true }), updateEase = (value: any) => {
             if (typeof value === 'string'){
                 (data as IAnimationTransition).ease = (GetGlobal().GetConcept<IAnimationConcept>('animation')?.GetEaseCollection().Find(value) || null);
+            }
+            else if (Array.isArray(value)){
+                (data as IAnimationTransition).ease = CollectAnimationEasings(value);
             }
             else{
                 (data as IAnimationTransition).ease = (value || null);
@@ -123,31 +131,51 @@ export const TransitionDirectiveHandler = CreateDirectiveHandlerCallback('transi
     else if (argKey === 'repeats' || argKey === 'delay'){
         HandleNumeric({ data, componentId, contextElement, expression, key: argKey, defaultValue: 0, isDuration: (argKey === 'delay') });
     }
+    else if (argKey){
+        const [actor, ease, numeric] = FindFirst(argKey) || [null, null, null];
+        if (actor !== null){
+            (data as IAnimationTransition).actor = actor;
+        }
+        else if (ease !== null){
+            (data as IAnimationTransition).ease = ease;
+        }
+        else if (numeric !== null){
+            (data as IAnimationTransition).duration = numeric;
+        }
+    }
     else{//Check for object
         EvaluateLater({ componentId, contextElement, expression })((value) => {
             if (IsObject(value)){//Copy props
                 Object.entries(value).forEach(([key, value]) => (data[key] = value));
             }
             else if (value instanceof HTMLElement){
-                let getData: () => any;
+                let getData: () => any, cachedData: IAnimationTransition | null = null, nextTickQueued = false;
                 if ('GetData' in value && typeof value['GetData'] === 'function'){
                     getData = () => (value['GetData'] as any)();
                 }
                 else{
                     getData = () => FindTransitionData({ componentId, contextElement: value });
                 }
+
+                const getCachedData = () => {
+                    if (!cachedData){
+                        cachedData = getData();
+                        if (!nextTickQueued){
+                            nextTickQueued = true;
+                            FindComponentById(componentId)?.GetBackend().changes.AddNextTickHandler(() => {
+                                cachedData = null;
+                                nextTickQueued = false;
+                            });
+                        }
+                    }
+                    return cachedData;
+                };
                 
                 FindComponentById(componentId)?.FindElementScope(contextElement)?.SetData('transition', CreateInplaceProxy(BuildProxyOptions({
                     setter: () => true,
                     getter: (prop) => {
-                        if (!prop){
-                            return undefined;
-                        }
-                        
-                        let data = getData();
-                        if (data.hasOwnProperty(prop)){
-                            return data[prop];
-                        }
+                        const data = getCachedData();
+                        return (prop && data && data.hasOwnProperty(prop)) ? data[prop] : undefined;
                     },
                     lookup: ['actor', 'ease', 'duration', 'repeats', 'delay', 'allowed'],
                 })));

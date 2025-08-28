@@ -18,10 +18,10 @@ import { QuadraticAnimationEase, QuadraticInAnimationEase, QuadraticOutAnimation
 import { QuartAnimationEase, QuartInAnimationEase, QuartOutAnimationEase, QuartInOutAnimationEase } from './easing/quart';
 import { QuintAnimationEase, QuintInAnimationEase, QuintOutAnimationEase, QuintInOutAnimationEase } from './easing/quint';
 import { SineAnimationEase, SineInAnimationEase, SineOutAnimationEase, SineInOutAnimationEase } from './easing/sine';
-import { CompositeAnimationEase } from './easing/composite';
 
 import { DefaultAnimationEase } from './easing/default';
 import { LinearAnimationEase } from './easing/linear';
+import { SnapAnimationEase } from './easing/snap';
 
 import { DefaultAnimationActor } from './actors/default';
 import { NullAnimationActor } from './actors/null';
@@ -149,6 +149,7 @@ export function InlineJSAnimation(){
     
         addEase(DefaultAnimationEase);
         addEase(LinearAnimationEase);
+        addEase(SnapAnimationEase);
     
         addActor(DefaultAnimationActor);
         addActor(NullAnimationActor);

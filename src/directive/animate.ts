@@ -36,15 +36,14 @@ export const AnimateDirectiveHandler = CreateDirectiveHandlerCallback('animate',
                         transitionCancel = null;
                         if (waited){
                             callback && callback();
-                            if (options.reset){
-                                (options.inner ? Array.from(contextElement.children) : [contextElement]).forEach(child => {
-                                    (child as HTMLElement).style.removeProperty('transform');
-                                    (child as HTMLElement).style.removeProperty('opacity');
-                                });
+                            if (options.reset && target){
+                                target.style.removeProperty('transform');
+                                target.style.removeProperty('opacity');
                             }
                         }
-                        else{
-                            traverseTargets(child => (child as HTMLElement).style.removeProperty('transform'));
+                        else if (target){
+                            target.style.removeProperty('transform');
+                            target.style.removeProperty('opacity');
                         }
                     }
                 },
