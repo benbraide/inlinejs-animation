@@ -1,4 +1,4 @@
-import { GetGlobal, IAnimationEase, IAnimationEaseParams, IAnimationConcept, IElementScopeCreatedCallbackParams } from "@benbraide/inlinejs";
+import { GetGlobal, IAnimationEase, IAnimationEaseParams, IAnimationConcept, IElementScopeCreatedCallbackParams, IElementScope } from "@benbraide/inlinejs";
 import { Property } from "@benbraide/inlinejs-element";
 import { AnimationBaseElement } from "./base";
 import { ResolveEaseName } from "../utilities/resolve";
@@ -18,9 +18,9 @@ export class AnimationBaseEaseElement extends AnimationBaseElement implements IA
     public Handle({ fraction }: IAnimationEaseParams){
         return fraction;
     }
-    
-    protected HandleElementScopeCreated_({ scope, ...rest }: IElementScopeCreatedCallbackParams, postAttributesCallback?: (() => void) | undefined){
-        super.HandleElementScopeCreated_({ scope, ...rest }, postAttributesCallback);
-        scope.AddUninitCallback(() => this.name_ && GetGlobal().GetConcept<IAnimationConcept>('animation')?.GetEaseCollection().Remove(this.name_));
+
+    protected HandleElementScopeDestroyed_(scope: IElementScope): void {
+        super.HandleElementScopeDestroyed_(scope);
+        this.name_ && GetGlobal().GetConcept<IAnimationConcept>('animation')?.GetEaseCollection().Remove(this.name_);
     }
 }

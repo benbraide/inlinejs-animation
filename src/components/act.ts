@@ -1,4 +1,4 @@
-import { IElementScopeCreatedCallbackParams } from "@benbraide/inlinejs";
+import { IElementScope } from "@benbraide/inlinejs";
 import { Property, RegisterCustomElement } from "@benbraide/inlinejs-element";
 import { ApplyRangeAndTransform } from "../actors/scene/generic";
 import { AnimationBaseElement } from "./base";
@@ -25,13 +25,14 @@ export class AnimationSceneActElement extends AnimationBaseElement{
         super();
     }
 
-    protected HandleElementScopeCreated_({ scope, ...rest }: IElementScopeCreatedCallbackParams, postAttributesCallback?: (() => void) | undefined){
-        super.HandleElementScopeCreated_({ scope, ...rest }, () => {
-            this.AddToParent_();
-            postAttributesCallback && postAttributesCallback();
-        });
+    protected HandlePostAttributesProcessPostfix_(): void {
+        super.HandlePostAttributesProcessPostfix_();
+        this.AddToParent_();
+    }
 
-        scope.AddUninitCallback(() => (this.parentElement && ('RemoveSceneAct' in this.parentElement) && typeof this.parentElement['RemoveSceneAct'] === 'function') && (this.parentElement['RemoveSceneAct'] as any)(this));
+    protected HandleElementScopeDestroyed_(scope: IElementScope): void {
+        super.HandleElementScopeDestroyed_(scope);
+        (this.parentElement && ('RemoveSceneAct' in this.parentElement) && typeof this.parentElement['RemoveSceneAct'] === 'function') && (this.parentElement['RemoveSceneAct'] as any)(this);
     }
 
     private AddToParent_(){

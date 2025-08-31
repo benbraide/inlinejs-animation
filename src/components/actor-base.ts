@@ -1,4 +1,4 @@
-import { GetGlobal, IAnimationActor, IAnimationActorParams, IAnimationConcept, IElementScopeCreatedCallbackParams } from "@benbraide/inlinejs";
+import { GetGlobal, IAnimationActor, IAnimationActorParams, IAnimationConcept, IElementScope } from "@benbraide/inlinejs";
 import { Property } from "@benbraide/inlinejs-element";
 import { AnimationBaseElement } from "./base";
 import { ResolveActorName } from "../utilities/resolve";
@@ -16,9 +16,9 @@ export class AnimationBaseActorElement extends AnimationBaseElement implements I
     }
 
     public Handle(params: IAnimationActorParams){}
-    
-    protected HandleElementScopeCreated_({ scope, ...rest }: IElementScopeCreatedCallbackParams, postAttributesCallback?: (() => void) | undefined){
-        super.HandleElementScopeCreated_({ scope, ...rest }, postAttributesCallback);
-        scope.AddUninitCallback(() => this.name_ && GetGlobal().GetConcept<IAnimationConcept>('animation')?.GetActorCollection().Remove(this.name_));
+
+    protected HandleElementScopeDestroyed_(scope: IElementScope): void {
+        super.HandleElementScopeDestroyed_(scope);
+        this.name_ && GetGlobal().GetConcept<IAnimationConcept>('animation')?.GetActorCollection().Remove(this.name_);
     }
 }

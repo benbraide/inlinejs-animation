@@ -1,4 +1,4 @@
-import { IAnimationActor, IAnimationActorParams, IElementScopeCreatedCallbackParams } from "@benbraide/inlinejs";
+import { IAnimationActor, IAnimationActorParams, IElementScope, IElementScopeCreatedCallbackParams } from "@benbraide/inlinejs";
 import { ConcurrentCompositeAnimationActor } from "../actors/composite/concurrent";
 import { RegisterCustomElement } from "@benbraide/inlinejs-element";
 import { AnimationBaseActorElement } from "./actor-base";
@@ -15,11 +15,20 @@ export class AnimationCollectElement extends AnimationBaseActorElement{
         this.actor_ && this.actor_.Handle(params);
     }
 
-    protected HandleElementScopeCreated_({ scope, ...rest }: IElementScopeCreatedCallbackParams, postAttributesCallback?: (() => void) | undefined){
-        super.HandleElementScopeCreated_({ scope, ...rest }, postAttributesCallback);
-        scope.AddPostProcessCallback(() => this.RefreshCollection_());
+    protected HandleElementScopeCreatedPostfix_({ scope, ...rest }: IElementScopeCreatedCallbackParams): void {
+        super.HandleElementScopeCreatedPostfix_({ scope, ...rest });
         scope.AddTreeChangeCallback(() => this.RefreshCollection_());
-        scope.AddUninitCallback(() => (this.actor_ = null));
+    }
+
+    protected HandleElementScopeDestroyed_(scope: IElementScope): void {
+        super.HandleElementScopeDestroyed_(scope);
+        this.actor_?.RemoveAll();
+        this.actor_ = null;
+    }
+
+    protected HandlePostProcess_(): void {
+        super.HandlePostProcess_();
+        this.RefreshCollection_();
     }
 
     protected RefreshCollection_(){

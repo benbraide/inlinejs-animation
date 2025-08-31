@@ -1,4 +1,4 @@
-import { IElementScopeCreatedCallbackParams } from "@benbraide/inlinejs";
+import { IElementScope } from "@benbraide/inlinejs";
 import { AnimationBaseElement } from "./base";
 export declare class AnimationSceneActElement extends AnimationBaseElement {
     private id_;
@@ -8,7 +8,8 @@ export declare class AnimationSceneActElement extends AnimationBaseElement {
     from: number;
     to: number;
     constructor();
-    protected HandleElementScopeCreated_({ scope, ...rest }: IElementScopeCreatedCallbackParams, postAttributesCallback?: (() => void) | undefined): void;
+    protected HandlePostAttributesProcessPostfix_(): void;
+    protected HandleElementScopeDestroyed_(scope: IElementScope): void;
     private AddToParent_;
 }
 export declare function AnimationSceneActElementCompact(): void;

@@ -1,5 +1,5 @@
 import { Property } from "@benbraide/inlinejs-element";
-import { AnimationActorCallbackType, AnimationEaseCallbackType, IAnimationActor, IAnimationActorParams, IAnimationEase, IAnimationEaseParams, IElementScopeCreatedCallbackParams } from "@benbraide/inlinejs";
+import { AnimationActorCallbackType, AnimationEaseCallbackType, IAnimationActor, IAnimationActorParams, IAnimationEase, IAnimationEaseParams, IElementScope, IElementScopeCreatedCallbackParams } from "@benbraide/inlinejs";
 import { ResolveActor } from "../utilities/resolve";
 import { AnimationBaseActorElement } from "./actor-base";
 
@@ -15,9 +15,9 @@ export class AnimationActorElement extends AnimationBaseActorElement{
         this.Handle_(params, null);
     }
 
-    protected HandleElementScopeCreated_({ scope, ...rest }: IElementScopeCreatedCallbackParams, postAttributesCallback?: (() => void) | undefined){
-        super.HandleElementScopeCreated_({ scope, ...rest }, postAttributesCallback);
-        scope.AddUninitCallback(() => (this.actor = ''));
+    protected HandleElementScopeDestroyed_(scope: IElementScope): void {
+        super.HandleElementScopeDestroyed_(scope);
+        this.actor = '';
     }
 
     protected Handle_(params: IAnimationActorParams, ease: IAnimationEase | AnimationEaseCallbackType | null, timeRelative?: boolean){
